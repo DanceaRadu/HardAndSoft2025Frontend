@@ -3,5 +3,18 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  width: 100%;
+
+  overflow: hidden;
 }
 
+.stream-video-container {
+  height: 100%;
+  width: 100%;
+}
+
+.video-player {
+  aspect-ratio: 960/540;
+  width: 100%;
+  object-fit: fill;
+}
