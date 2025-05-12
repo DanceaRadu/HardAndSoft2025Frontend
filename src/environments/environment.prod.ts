@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseURL: '',
+  baseURL: 'https://hs2025-backend.gonemesis.org',
 };
