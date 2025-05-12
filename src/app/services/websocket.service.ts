@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { environment } from '../../environments/environment';
 import * as Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class WebsocketService {
     this.stompClient.debug = () => {};
 
     this.stompClient.connect({}, () => {
-      console.log('Connected to Websocket ✅');
+      console.log('✅ Connected to Websocket');
       this.connectionStatusSubject.next(true);
 
       this.stompClient!.subscribe('/topic/sensors', (message: any) => {

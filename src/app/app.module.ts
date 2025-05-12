@@ -8,6 +8,7 @@ import { RobotStatusComponent } from './components/robot-status/robot-status.com
 import { MainPageComponent } from './components/main-page/main-page.component';
 import { MatIcon } from '@angular/material/icon';
 import { ConnectionStatusComponent } from './components/header/connection-status/connection-status.component';
+import { CameraStreamComponent } from './components/camera-stream/camera-stream.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ConnectionStatusComponent } from './components/header/connection-status
     HeaderComponent,
     RobotStatusComponent,
     MainPageComponent,
-    ConnectionStatusComponent
+    ConnectionStatusComponent,
+    CameraStreamComponent
   ],
   imports: [
     BrowserModule,
