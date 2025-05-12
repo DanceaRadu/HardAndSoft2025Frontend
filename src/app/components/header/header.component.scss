@@ -1,0 +1,17 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: var(--components-background);
+  border-radius: 0.5rem;
+  height: 5rem;
+
+  padding: 1.5rem;
+}
+
+.header-title {
+  font-size: var(--text-xlarge);
+  color: var(--text-color);
+  font-weight: 500;
+}

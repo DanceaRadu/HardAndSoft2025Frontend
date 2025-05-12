@@ -1,4 +1,29 @@
 @use "tailwindcss";
 
-html, body { height: 100%; }
+:root {
+  --background-color: #111827;
+  --components-background: #1F2937;
+
+  --text-color: #FFFFFF;
+  --text-secondary: #9CA3AF;
+
+  --text-accent: #60A5FA;
+  --background-accent: #2563EB;
+
+  --jetbrains-font: "JetBrains Mono", monospace;
+
+  --text-small: 14px;
+  --text-medium: 16px;
+  --text-large: 20px;
+  --text-xlarge: 24px;
+}
+
+.app-border {
+  margin: 1.2rem;
+}
+
+html, body {
+  background-color: var(--background-color);
+  height: 100%;
+}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
