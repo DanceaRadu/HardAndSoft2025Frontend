@@ -5,16 +5,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { RobotStatusComponent } from './components/robot-status/robot-status.component';
+import { MainPageComponent } from './components/main-page/main-page.component';
+import { MatIcon } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    RobotStatusComponent
+    RobotStatusComponent,
+    MainPageComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatIcon
   ],
   providers: [],
   bootstrap: [AppComponent]
