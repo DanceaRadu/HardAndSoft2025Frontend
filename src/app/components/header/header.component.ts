@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { WebsocketService } from '../../services/websocket.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -7,5 +9,21 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
+  isConnected: boolean = false;
+  private connectionStatusSubscription!: Subscription;
 
+  constructor(private websocketService: WebsocketService) {}
+
+  ngOnInit(): void {
+    this.connectionStatusSubscription = this.websocketService.getConnectionStatus()
+      .subscribe(status => {
+        this.isConnected = status;
+      });
+  }
+
+  ngOnDestroy(): void {
+    if (this.connectionStatusSubscription) {
+      this.connectionStatusSubscription.unsubscribe();
+    }
+  }
 }

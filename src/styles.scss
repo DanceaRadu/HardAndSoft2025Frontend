@@ -11,6 +11,10 @@
   --text-accent: #60A5FA;
   --background-accent: #2563EB;
 
+  --success-color: #34D399;
+  --warning-color: #FBBF24;
+  --error-color: #F87171;
+
   --jetbrains-font: "JetBrains Mono", monospace;
   --inter-font: "Inter", sans-serif;
 
@@ -29,6 +33,7 @@
   background-color: var(--components-background);
   border-radius: 0.5rem;
   padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 html, body {

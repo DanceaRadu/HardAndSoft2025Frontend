@@ -1,0 +1,21 @@
+.sensor-title {
+  font-size: var(--text-large);
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.sensor-information {
+
+}
+
+.sensor-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.sensor-entry {
+  color: var(--text-secondary);
+}
