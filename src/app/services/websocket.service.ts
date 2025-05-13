@@ -56,4 +56,10 @@ export class WebsocketService {
       });
     }
   }
+
+  sendMessage(topic: string, message: any): void {
+    if (this.stompClient && this.stompClient.connected) {
+      this.stompClient.send(`/topic/${topic}`, {}, JSON.stringify(message));
+    }
+  }
 }

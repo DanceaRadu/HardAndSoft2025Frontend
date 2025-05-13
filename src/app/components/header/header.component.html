@@ -1,6 +1,11 @@
 <div class="header-container">
   <div class="flex items-center">
-    <mat-icon class="app-icon">ssid_chart</mat-icon>
+    <button class="mb-1" (click)="handleStartMazeMapping()" mat-icon-button aria-label="Start">
+      <mat-icon class="play-icon"><span class="material-symbols-outlined">play_arrow</span></mat-icon>
+    </button>
+    <button class="mb-1" (click)="handleStopMazeMapping()" mat-icon-button aria-label="Start">
+      <mat-icon class="stop-icon"><span class="material-symbols-outlined">cancel</span></mat-icon>
+    </button>
     <div class="header-title">Hard and Soft 2025</div>
   </div>
   <app-connection-status [status]="isConnected"></app-connection-status>

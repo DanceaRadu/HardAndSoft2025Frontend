@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, HostListener } from '@angular/core';
 import { WebsocketService } from '../../services/websocket.service';
 import * as THREE from 'three';
 import { LidarData } from '../../models/lidar.model';
@@ -33,6 +33,16 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.renderer.dispose();
     this.controls.dispose();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    const width = this.rendererContainer.nativeElement.clientWidth;
+    const height = this.rendererContainer.nativeElement.clientHeight;
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(width, height);
+    this.renderer.setPixelRatio(window.devicePixelRatio);
   }
 
   private initThree() {

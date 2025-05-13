@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { WebsocketService } from '../../services/websocket.service';
 import { Subscription } from 'rxjs';
 
@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
   isConnected: boolean = false;
   private connectionStatusSubscription!: Subscription;
 
@@ -25,5 +25,13 @@ export class HeaderComponent {
     if (this.connectionStatusSubscription) {
       this.connectionStatusSubscription.unsubscribe();
     }
+  }
+
+  handleStartMazeMapping() {
+    this.websocketService.sendMessage("sensors", {type: "start"})
+  }
+
+  handleStopMazeMapping() {
+    this.websocketService.sendMessage("sensors", {type: "stop"})
   }
 }
