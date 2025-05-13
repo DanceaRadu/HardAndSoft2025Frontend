@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { LidarData } from '../../models/lidar.model';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { LogMessage } from '../../models/log-message.model';
+import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 
 @Component({
   selector: 'app-lidar-visualizer',
@@ -25,10 +26,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
   private currentRobotX: number = 0;
   private currentRobotY: number = 0;
 
-  private redPointGeometry!: THREE.BufferGeometry;
-  private redPointVertices!: Float32Array;
-  private redPointMaterial!: THREE.PointsMaterial;
-  private redPoint!: THREE.Points;
+  private carModel!: THREE.Mesh<THREE.BufferGeometry, THREE.MeshNormalMaterial>;
 
   ngOnInit(): void {
     this.initThree();
@@ -89,16 +87,14 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     this.pointCloud = new THREE.Points(geometry, this.pointMaterial);
     this.scene.add(this.pointCloud);
 
-    this.redPointGeometry = new THREE.BufferGeometry();
-    this.redPointVertices = new Float32Array([0, 0, 0]);
-    this.redPointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(this.redPointVertices, 3));
-    this.redPointMaterial = new THREE.PointsMaterial({
-      color: 0xFF0000,
-      size: 7,
-      sizeAttenuation: false
-    });
-    this.redPoint = new THREE.Points(this.redPointGeometry, this.redPointMaterial);
-    this.scene.add(this.redPoint);
+    const stlLoader = new STLLoader();
+    stlLoader.load('/assets/models/toy-car.stl', (geometry) => {
+      const material = new THREE.MeshNormalMaterial();
+      this.carModel = new THREE.Mesh(geometry, material);
+      this.carModel.scale.set(0.008, 0.008, 0.008);
+      this.carModel.position.set(this.currentRobotX, 0, this.currentRobotY);
+      this.scene.add(this.carModel);
+  });
 
     const gridHelper = new THREE.GridHelper(10, 20, 0x444444, 0x888888);
     gridHelper.position.set(0, 0, -0.01);
@@ -111,9 +107,9 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     if(message.robot_x && message.robot_y) {
       this.currentRobotX = message.robot_x;
       this.currentRobotY = message.robot_y;
-      const positionAttribute = this.redPointGeometry.getAttribute('position');
-      positionAttribute.setXYZ(0, this.currentRobotX, 0, this.currentRobotY);
-      positionAttribute.needsUpdate = true;
+      if (this.carModel) {
+        this.carModel.position.set(this.currentRobotX, 0, this.currentRobotY);
+      }
     }
 
     const points = message.ranges
@@ -158,7 +154,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     const material = new THREE.SpriteMaterial({ map: texture });
     const sprite = new THREE.Sprite(material);
     sprite.position.set(this.currentRobotX, 0, this.currentRobotY);
-    sprite.scale.set(0.1, 0.1, 1);
+    sprite.scale.set(0.15, 0.15, 15);
     this.scene.add(sprite);
   }
 }
