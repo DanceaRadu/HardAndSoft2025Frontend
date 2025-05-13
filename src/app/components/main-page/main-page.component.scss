@@ -39,12 +39,12 @@
   }
   .log-panel {
     flex: 1;
+    overflow: auto;
     padding: 0;
   }
 }
 
 .visualizer {
-  background-color: red;
   flex: 1;
 }
 
@@ -63,7 +63,8 @@
 }
 
 .logs-button {
-  color: var(--text-accent)
+  color: var(--text-accent);
+  margin-right: 0.5rem;
 }
 
 @media (max-width: 768px) {

@@ -11,6 +11,8 @@ import { ConnectionStatusComponent } from './components/header/connection-status
 import { CameraStreamComponent } from './components/camera-stream/camera-stream.component';
 import { LidarVisualizerComponent } from './components/lidar-visualizer/lidar-visualizer.component';
 import { MatIconButton } from '@angular/material/button';
+import { LogPanelComponent } from './components/log-panel/log-panel.component';
+import { LogEntryComponent } from './components/log-panel/log-entry/log-entry.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { MatIconButton } from '@angular/material/button';
     MainPageComponent,
     ConnectionStatusComponent,
     CameraStreamComponent,
-    LidarVisualizerComponent
+    LidarVisualizerComponent,
+    LogPanelComponent,
+    LogEntryComponent
   ],
   imports: [
     BrowserModule,
