@@ -3,6 +3,7 @@ import { WebsocketService } from '../../services/websocket.service';
 import * as THREE from 'three';
 import { LidarData } from '../../models/lidar.model';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { LogMessage } from '../../models/log-message.model';
 
 @Component({
   selector: 'app-lidar-visualizer',
@@ -21,11 +22,21 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
   private pointCloud!: THREE.Points;
   private pointMaterial!: THREE.PointsMaterial;
 
+  private currentRobotX: number = 0;
+  private currentRobotY: number = 0;
+
+  private redPointGeometry!: THREE.BufferGeometry;
+  private redPointVertices!: Float32Array;
+  private redPointMaterial!: THREE.PointsMaterial;
+  private redPoint!: THREE.Points;
+
   ngOnInit(): void {
     this.initThree();
     this.websocketService.getMessages().subscribe(message => {
       if(message.type == 'lidar') {
         this.updatePointCloud(message)
+      } else if (message.type == "log") {
+        this.handleLogMessage(message)
       }
     })
   }
@@ -78,18 +89,16 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     this.pointCloud = new THREE.Points(geometry, this.pointMaterial);
     this.scene.add(this.pointCloud);
 
-    const redPointGeometry = new THREE.BufferGeometry();
-    const redPointVertices = new Float32Array([0, 0, 0]);
-    redPointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(redPointVertices, 3));
-
-    const redPointMaterial = new THREE.PointsMaterial({
+    this.redPointGeometry = new THREE.BufferGeometry();
+    this.redPointVertices = new Float32Array([0, 0, 0]);
+    this.redPointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(this.redPointVertices, 3));
+    this.redPointMaterial = new THREE.PointsMaterial({
       color: 0xFF0000,
       size: 5,
       sizeAttenuation: false
     });
-
-    const redPoint = new THREE.Points(redPointGeometry, redPointMaterial);
-    this.scene.add(redPoint);
+    this.redPoint = new THREE.Points(this.redPointGeometry, this.redPointMaterial);
+    this.scene.add(this.redPoint);
 
     const gridHelper = new THREE.GridHelper(10, 20, 0x444444, 0x888888);
     gridHelper.position.set(0, 0, -0.01);
@@ -99,6 +108,14 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
   }
 
   private updatePointCloud(message: LidarData) {
+    if(message.robot_x && message.robot_y) {
+      this.currentRobotX = message.robot_x;
+      this.currentRobotY = message.robot_y;
+      const positionAttribute = this.redPointGeometry.getAttribute('position');
+      positionAttribute.setXYZ(0, this.currentRobotX, 0, this.currentRobotY);
+      positionAttribute.needsUpdate = true;
+    }
+
     const points = message.ranges
       .filter(e => e !== -1 && e < 0.5)
       .map((range, index) => {
@@ -122,5 +139,29 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     requestAnimationFrame(() => this.animate());
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
+  }
+
+  handleLogMessage(message: LogMessage) {
+    let assetPath = '';
+    if(message.logType === "vibration") {
+      assetPath = '/assets/vibration-sprite.png';
+    } else if(message.logType === "alcohol") {
+      assetPath = '/assets/bottle-sprite.png';
+    } else if(message.logType === "magnetic") {
+      assetPath = '/assets/finish-sprite.png';
+    } else {
+      return;
+    }
+
+    this.currentRobotX ++;
+    this.currentRobotY ++;
+
+    const textureLoader = new THREE.TextureLoader();
+    const texture = textureLoader.load(assetPath);
+    const material = new THREE.SpriteMaterial({ map: texture });
+    const sprite = new THREE.Sprite(material);
+    sprite.position.set(this.currentRobotX, 0, this.currentRobotY);
+    sprite.scale.set(0.1, 0.1, 1);
+    this.scene.add(sprite);
   }
 }

@@ -9,6 +9,8 @@ export interface LidarData {
   header: LidarHeader;
   ranges: number[];
   intensities: number[];
+  robot_x?: number;
+  robot_y?: number;
 }
 
 export interface LidarPoint {
