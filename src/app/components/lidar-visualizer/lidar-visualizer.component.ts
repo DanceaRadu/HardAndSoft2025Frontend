@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { WebsocketService } from '../../services/websocket.service';
-import { LidarData } from '../../models/robot-status.model';
 import * as THREE from 'three';
+import { LidarData } from '../../models/lidar.model';
 
 @Component({
   selector: 'app-lidar-visualizer',
@@ -35,7 +35,14 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
   }
 
   private updatePointCloud(message: LidarData) {
-    let points = message.points
+    let points = message.ranges
+      .filter(e => e !== -1 && e < 0.5)
+      .map((range, index) => {
+        const angle = (index - 40) * message.header.angle_increment;
+        const x = range * Math.cos(angle);
+        const y = range * Math.sin(angle);
+        return { x, y };
+    })
     const vertices = points.flatMap(point => [point.x, point.y, 0]);
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
@@ -43,7 +50,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     this.pointCloud.geometry.dispose();
     this.pointCloud.geometry = geometry;
 
-    this.adjustCameraToFitPoints(points);
+    // this.adjustCameraToFitPoints(points);
     this.adjustPointSize();
   }
 
@@ -88,7 +95,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     const width = this.rendererContainer.nativeElement.clientWidth;
     const height = this.rendererContainer.nativeElement.clientHeight;
     this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    this.camera.position.z = 10;
+    this.camera.position.z = 0.7;
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(width, height);
@@ -125,7 +132,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     this.robotSprite = new THREE.Sprite(spriteMaterial);
     this.robotSprite.scale.set(0.2, 0.2, 0.2);
     this.robotSprite.position.set(0, 0, 0);
-    this.scene.add(this.robotSprite);
+    // this.scene.add(this.robotSprite);
   }
 
   private animate() {

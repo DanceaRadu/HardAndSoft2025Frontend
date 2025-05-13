@@ -16,7 +16,6 @@ export class LogPanelComponent implements OnInit {
 
   ngOnInit(): void {
     this.websocketService.getMessages().subscribe(message => {
-      console.log(message)
       if (message.type === 'log') {
         this.handleLogMessage(message)
       }
