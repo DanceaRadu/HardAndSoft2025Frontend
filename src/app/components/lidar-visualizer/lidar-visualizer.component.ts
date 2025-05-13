@@ -82,10 +82,6 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     this.camera.position.set(center.x, center.y, distance * 1.5);
     this.camera.lookAt(center);
     this.camera.updateProjectionMatrix();
-
-    if (this.robotSprite) {
-      //this.robotSprite.position.set(center.x, center.y, 0);
-    }
   }
 
   private initThree() {
@@ -113,7 +109,18 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     this.pointCloud = new THREE.Points(geometry, this.pointMaterial);
     this.scene.add(this.pointCloud);
 
-    this.addCenterSprite();
+    const redPointGeometry = new THREE.BufferGeometry();
+    const redPointVertices = new Float32Array([0, 0, 0]);
+    redPointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(redPointVertices, 3));
+
+    const redPointMaterial = new THREE.PointsMaterial({
+      color: 0xFF0000,
+      size: 5,
+      sizeAttenuation: false
+    });
+
+    const redPoint = new THREE.Points(redPointGeometry, redPointMaterial);
+    this.scene.add(redPoint);
 
     this.animate();
   }
@@ -132,7 +139,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     this.robotSprite = new THREE.Sprite(spriteMaterial);
     this.robotSprite.scale.set(0.2, 0.2, 0.2);
     this.robotSprite.position.set(0, 0, 0);
-    // this.scene.add(this.robotSprite);
+    this.scene.add(this.robotSprite);
   }
 
   private animate() {
