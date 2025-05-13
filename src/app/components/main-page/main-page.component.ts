@@ -22,7 +22,6 @@ export class MainPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.websocketService.getMessages().subscribe(e => {
-      console.log(e);
       this.handleWebsocketMessage(e)
     })
   }

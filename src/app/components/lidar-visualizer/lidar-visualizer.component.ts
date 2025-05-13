@@ -18,6 +18,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
   private renderer!: THREE.WebGLRenderer;
   private pointCloud!: THREE.Points;
   private pointMaterial!: THREE.PointsMaterial;
+  private robotSprite!: THREE.Sprite;
   private maxCanvasSize = 1000;
 
   ngOnInit(): void {
@@ -38,6 +39,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     const vertices = points.flatMap(point => [point.x, point.y, 0]);
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+
     this.pointCloud.geometry.dispose();
     this.pointCloud.geometry = geometry;
 
@@ -73,6 +75,10 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     this.camera.position.set(center.x, center.y, distance * 1.5);
     this.camera.lookAt(center);
     this.camera.updateProjectionMatrix();
+
+    if (this.robotSprite) {
+      //this.robotSprite.position.set(center.x, center.y, 0);
+    }
   }
 
   private initThree() {
@@ -100,13 +106,30 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     this.pointCloud = new THREE.Points(geometry, this.pointMaterial);
     this.scene.add(this.pointCloud);
 
+    this.addCenterSprite();
+
     this.animate();
+  }
+
+  private addCenterSprite() {
+    const textureLoader = new THREE.TextureLoader();
+    const iconTexture = textureLoader.load('assets/robot-sprite.png');
+
+    const spriteMaterial = new THREE.SpriteMaterial({
+      map: iconTexture,
+      sizeAttenuation: false,
+      transparent: true,
+      opacity: 1,
+    });
+
+    this.robotSprite = new THREE.Sprite(spriteMaterial);
+    this.robotSprite.scale.set(0.2, 0.2, 0.2);
+    this.robotSprite.position.set(0, 0, 0);
+    this.scene.add(this.robotSprite);
   }
 
   private animate() {
     requestAnimationFrame(() => this.animate());
     this.renderer.render(this.scene, this.camera);
   }
-
-
 }
