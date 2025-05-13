@@ -2,6 +2,7 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { WebsocketService } from '../../services/websocket.service';
 import * as THREE from 'three';
 import { LidarData } from '../../models/lidar.model';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 @Component({
   selector: 'app-lidar-visualizer',
@@ -16,10 +17,9 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
   private renderer!: THREE.WebGLRenderer;
+  private controls!: OrbitControls;
   private pointCloud!: THREE.Points;
   private pointMaterial!: THREE.PointsMaterial;
-  private robotSprite!: THREE.Sprite;
-  private maxCanvasSize = 1000;
 
   ngOnInit(): void {
     this.initThree();
@@ -32,56 +32,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.renderer.dispose();
-  }
-
-  private updatePointCloud(message: LidarData) {
-    let points = message.ranges
-      .filter(e => e !== -1 && e < 0.5)
-      .map((range, index) => {
-        const angle = (index - 40) * message.header.angle_increment;
-        const x = range * Math.cos(angle);
-        const y = range * Math.sin(angle);
-        return { x, y };
-    })
-    const vertices = points.flatMap(point => [point.x, point.y, 0]);
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-
-    this.pointCloud.geometry.dispose();
-    this.pointCloud.geometry = geometry;
-
-    // this.adjustCameraToFitPoints(points);
-    this.adjustPointSize();
-  }
-
-  private adjustPointSize() {
-    const canvasWidth = this.rendererContainer.nativeElement.clientWidth;
-    const canvasHeight = this.rendererContainer.nativeElement.clientHeight;
-
-    const sizeFactor = (Math.min(canvasWidth, canvasHeight) * 10) / this.maxCanvasSize;
-    this.pointMaterial.size = Math.max(0.1, sizeFactor * 0.5);
-    this.pointMaterial.needsUpdate = true;
-  }
-
-  private adjustCameraToFitPoints(points: { x: number; y: number }[]) {
-    const boundingBox = new THREE.Box3();
-    points.forEach(point => {
-      boundingBox.expandByPoint(new THREE.Vector3(point.x, point.y, 0));
-    });
-
-    const size = new THREE.Vector3();
-    boundingBox.getSize(size);
-
-    const center = new THREE.Vector3();
-    boundingBox.getCenter(center);
-
-    const maxDimension = Math.max(size.x, size.y);
-    const fov = this.camera.fov * (Math.PI / 180);
-    const distance = (maxDimension / 2) / Math.tan(fov / 2);
-
-    this.camera.position.set(center.x, center.y, distance * 1.5);
-    this.camera.lookAt(center);
-    this.camera.updateProjectionMatrix();
+    this.controls.dispose();
   }
 
   private initThree() {
@@ -96,6 +47,14 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(width, height);
     this.rendererContainer.nativeElement.appendChild(this.renderer.domElement);
+
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.enableDamping = true;
+    this.controls.dampingFactor = 0.05;
+    this.controls.enablePan = true;
+    this.controls.enableZoom = true;
+    this.controls.minDistance = 0.1;
+    this.controls.maxDistance = 10;
 
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.Float32BufferAttribute([], 3));
@@ -125,25 +84,29 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     this.animate();
   }
 
-  private addCenterSprite() {
-    const textureLoader = new THREE.TextureLoader();
-    const iconTexture = textureLoader.load('assets/robot-sprite.png');
+  private updatePointCloud(message: LidarData) {
+    const points = message.ranges
+      .filter(e => e !== -1 && e < 0.5)
+      .map((range, index) => {
+        const angle = (index - 40) * message.header.angle_increment;
+        const x = range * Math.cos(angle);
+        const y = range * Math.sin(angle);
+        return { x, y };
+      });
 
-    const spriteMaterial = new THREE.SpriteMaterial({
-      map: iconTexture,
-      sizeAttenuation: false,
-      transparent: true,
-      opacity: 1,
-    });
+    const vertices = points.flatMap(point => [point.x, point.y, 0]);
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
 
-    this.robotSprite = new THREE.Sprite(spriteMaterial);
-    this.robotSprite.scale.set(0.2, 0.2, 0.2);
-    this.robotSprite.position.set(0, 0, 0);
-    this.scene.add(this.robotSprite);
+    this.pointCloud.geometry.dispose();
+    this.pointCloud.geometry = geometry;
+
+    this.pointMaterial.needsUpdate = true;
   }
 
   private animate() {
     requestAnimationFrame(() => this.animate());
+    this.controls.update();
     this.renderer.render(this.scene, this.camera);
   }
 }
