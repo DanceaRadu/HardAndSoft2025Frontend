@@ -1,8 +1,8 @@
 <div class="panel-container">
   <div class="left-panel">
     <div class="panel point-cloud-panel">
-      <div class="visualizer-title">LIDAR Data visualization</div>
-      <div class="visualizer-separator"></div>
+      <div class="panel-title">LIDAR Data visualization</div>
+      <div class="panel-separator"></div>
       <app-lidar-visualizer class="visualizer"></app-lidar-visualizer>
     </div>
     <div class="panel camera-panel">
@@ -15,7 +15,13 @@
       <app-robot-status [robotStatus]="robotStatus"></app-robot-status>
     </div>
     <div class="panel log-panel">
-
+      <div class="flex items-center justify-between">
+        <div class="panel-title">Live logs</div>
+        <button mat-icon-button aria-label="Download logs" class="logs-button">
+          <mat-icon>download</mat-icon>
+        </button>
+      </div>
+      <div class="panel-separator"></div>
     </div>
   </div>
 </div>

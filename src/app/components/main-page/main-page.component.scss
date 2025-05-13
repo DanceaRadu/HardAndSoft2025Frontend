@@ -39,6 +39,7 @@
   }
   .log-panel {
     flex: 1;
+    padding: 0;
   }
 }
 
@@ -47,18 +48,22 @@
   flex: 1;
 }
 
-.visualizer-title {
+.panel-title {
   font-size: var(--text-large);
   font-weight: 600;
   color: var(--text-color);
   padding: 1rem;
 }
 
-.visualizer-separator {
+.panel-separator {
   height: 1px;
   width: 100%;
   background-color: var(--text-secondary);
   opacity: 0.5;
+}
+
+.logs-button {
+  color: var(--text-accent)
 }
 
 @media (max-width: 768px) {

@@ -10,6 +10,7 @@ import { MatIcon } from '@angular/material/icon';
 import { ConnectionStatusComponent } from './components/header/connection-status/connection-status.component';
 import { CameraStreamComponent } from './components/camera-stream/camera-stream.component';
 import { LidarVisualizerComponent } from './components/lidar-visualizer/lidar-visualizer.component';
+import { MatIconButton } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { LidarVisualizerComponent } from './components/lidar-visualizer/lidar-vi
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MatIcon
+    MatIcon,
+    MatIconButton
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
-import {environment} from '../../../environments/environment';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-camera-stream',
@@ -11,7 +11,6 @@ export class CameraStreamComponent implements AfterViewInit {
   @ViewChild('remoteVideo') remoteVideoRef!: ElementRef<HTMLVideoElement>;
   peerConnection!: RTCPeerConnection;
   signalingSocket!: WebSocket;
-  showPlayButton = true;
 
   readonly SIGNALING_SERVER_URL = environment.signalingServerURL;
   readonly STUN_SERVERS = [
@@ -107,13 +106,5 @@ export class CameraStreamComponent implements AfterViewInit {
         }));
       }
     };
-  }
-
-  handleStartStream() {
-    this.remoteVideoRef.nativeElement.play().then(() => {
-      this.showPlayButton = false;
-    }).catch(() => {
-      console.error('Something went wrong while trying to play the video stream');
-    })
   }
 }
