@@ -94,7 +94,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     this.redPointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(this.redPointVertices, 3));
     this.redPointMaterial = new THREE.PointsMaterial({
       color: 0xFF0000,
-      size: 5,
+      size: 7,
       sizeAttenuation: false
     });
     this.redPoint = new THREE.Points(this.redPointGeometry, this.redPointMaterial);
@@ -152,9 +152,6 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     } else {
       return;
     }
-
-    this.currentRobotX ++;
-    this.currentRobotY ++;
 
     const textureLoader = new THREE.TextureLoader();
     const texture = textureLoader.load(assetPath);
