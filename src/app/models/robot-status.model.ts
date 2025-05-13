@@ -1,6 +1,8 @@
 export interface SensorData {
   hall: boolean;
   ultrasonic: number;
+  battery_voltage: number;
+  magnetic_field: boolean
 }
 
 export interface RobotStatus {

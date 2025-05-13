@@ -17,5 +17,42 @@
 }
 
 .sensor-entry {
+  display: flex;
+  align-items: center;
+}
+
+.sensor-label {
+  font-weight: 500;
   color: var(--text-secondary);
 }
+
+.sensor-value {
+  color: var(--text-color);
+}
+
+.sensor-icon {
+  transform: scale(1.4);
+  color: var(--success-color);
+  margin-right: 0.5rem;
+}
+
+.battery-icon {
+
+}
+
+.vibration-icon {
+  transform: scale(1.4);
+  color: var(--success-color);
+}
+
+.magnetic-icon {
+  transform: scale(1.4);
+  color: var(--success-color);
+}
+
+
+.distance-icon {
+  transform: scale(1.4);
+  color: var(--success-color);
+}
+

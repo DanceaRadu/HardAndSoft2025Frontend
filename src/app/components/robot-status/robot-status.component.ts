@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import {RobotStatus} from '../../models/robot-status.model';
+import { RobotStatus } from '../../models/robot-status.model';
 
 @Component({
   selector: 'app-robot-status',

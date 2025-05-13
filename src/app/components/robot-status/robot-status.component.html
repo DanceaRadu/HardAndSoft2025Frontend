@@ -2,20 +2,34 @@
 <div class="sensor-information">
   <div class="sensor-row">
     <div class="sensor-entry">
-      <div>Distance</div>
-      <div>{{robotStatus.sensors.ultrasonic}}</div>
+      <mat-icon class="sensor-icon battery-icon">battery_full</mat-icon>
+      <div class="ml-2">
+        <div class="sensor-label">Battery</div>
+        <div class="sensor-value">{{robotStatus.sensors.battery_voltage}} V</div>
+      </div>
     </div>
     <div class="sensor-entry">
-      <div>Vibration</div>
-      <div>{{robotStatus.sensors.hall}}</div>
+      <mat-icon class="sensor-icon vibration-icon">vibration</mat-icon>
+      <div class="ml-2">
+        <div class="sensor-label">Vibration</div>
+        <div class="sensor-value">{{robotStatus.sensors.hall}}</div>
+      </div>
     </div>
   </div>
   <div class="sensor-row">
     <div class="sensor-entry">
-
+      <mat-icon class="sensor-icon distance-icon">linear_scale</mat-icon>
+      <div class="ml-2">
+        <div class="sensor-label">Distance</div>
+        <div class="sensor-value">{{robotStatus.sensors.ultrasonic}}</div>
+      </div>
     </div>
     <div class="sensor-entry">
-
+      <mat-icon class="sensor-icon magnetic-icon">waves</mat-icon>
+      <div class="ml-2">
+        <div class="sensor-label">Magnetic</div>
+        <div class="sensor-value">{{robotStatus.sensors.magnetic_field}}</div>
+      </div>
     </div>
   </div>
 </div>

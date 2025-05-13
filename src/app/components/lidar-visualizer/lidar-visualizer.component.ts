@@ -61,7 +61,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
 
     this.pointMaterial = new THREE.PointsMaterial({
       color: 0x2563EB,
-      size: 0.5,
+      size: 5,
       sizeAttenuation: false
     });
 
@@ -81,6 +81,10 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     const redPoint = new THREE.Points(redPointGeometry, redPointMaterial);
     this.scene.add(redPoint);
 
+    const gridHelper = new THREE.GridHelper(10, 20, 0x444444, 0x888888);
+    gridHelper.position.set(0, 0, -0.01);
+    this.scene.add(gridHelper);
+
     this.animate();
   }
 
@@ -94,7 +98,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
         return { x, y };
       });
 
-    const vertices = points.flatMap(point => [point.x, point.y, 0]);
+    const vertices = points.flatMap(point => [point.x, 0, point.y]);
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
 

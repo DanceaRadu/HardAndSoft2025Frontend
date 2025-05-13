@@ -17,7 +17,11 @@
     <div class="panel log-panel">
       <div class="flex items-center justify-between">
         <div class="panel-title">Live logs</div>
-        <button mat-icon-button aria-label="Download logs" class="logs-button">
+        <button
+          (click)="handleDownloadLogs()"
+          mat-icon-button
+          aria-label="Download logs"
+          class="logs-button">
           <mat-icon>download</mat-icon>
         </button>
       </div>
