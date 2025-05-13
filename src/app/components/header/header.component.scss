@@ -21,11 +21,27 @@
 }
 
 .play-icon {
-    transform: scale(1.4);
-    color: var(--background-accent);
+  transform: scale(1.8);
+  color: var(--background-accent);
+  margin-right: 1rem;
+  cursor: default;
+  transition: color 0.3s, background-color 0.3s;
+
+  &:hover {
+    color: var(--background-accent-hover-color);
+    cursor: pointer;
+  }
 }
 
 .stop-icon {
   transform: scale(1.4);
   color: var(--error-color);
+  margin-right: 1rem;
+  cursor: default;
+  transition: color 0.3s, background-color 0.3s;
+
+  &:hover {
+    color: var(--error-hover-color);
+    cursor: pointer;
+  }
 }
