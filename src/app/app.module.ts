@@ -9,6 +9,7 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import { MatIcon } from '@angular/material/icon';
 import { ConnectionStatusComponent } from './components/header/connection-status/connection-status.component';
 import { CameraStreamComponent } from './components/camera-stream/camera-stream.component';
+import { LidarVisualizerComponent } from './components/lidar-visualizer/lidar-visualizer.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { CameraStreamComponent } from './components/camera-stream/camera-stream.
     RobotStatusComponent,
     MainPageComponent,
     ConnectionStatusComponent,
-    CameraStreamComponent
+    CameraStreamComponent,
+    LidarVisualizerComponent
   ],
   imports: [
     BrowserModule,
