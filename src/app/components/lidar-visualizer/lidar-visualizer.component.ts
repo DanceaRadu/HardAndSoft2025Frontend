@@ -24,7 +24,13 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
   private pointMaterial!: THREE.PointsMaterial;
 
   private currentRobotX: number = 0;
+  private xOffset?: number = undefined;
+
   private currentRobotY: number = 0;
+  private yOffset?: number = undefined
+
+  private currentRobotOrientation: number = 0;
+  private orientationOffset?: number = undefined;
 
   private carModel!: THREE.Mesh<THREE.BufferGeometry, THREE.MeshNormalMaterial>;
 
@@ -105,10 +111,26 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
 
   private updatePointCloud(message: LidarData) {
     if(message.robot_x && message.robot_y) {
-      this.currentRobotX = message.robot_x;
-      this.currentRobotY = message.robot_y;
+      if(this.xOffset === undefined && this.yOffset === undefined) {
+        this.xOffset = message.robot_x;
+        this.yOffset = message.robot_y;
+      }
+
+      this.currentRobotX = message.robot_x - (this.xOffset ?? 0);
+      this.currentRobotY = message.robot_y - (this.yOffset ?? 0);
       if (this.carModel) {
         this.carModel.position.set(this.currentRobotX, 0, this.currentRobotY);
+      }
+    }
+
+    if(message.orientation) {
+      if(this.orientationOffset === undefined) {
+        this.orientationOffset = message.orientation;
+      }
+
+      this.currentRobotOrientation = message.orientation - (this.orientationOffset ?? 0);
+      if (this.carModel) {
+        this.carModel.rotation.y = this.currentRobotOrientation;
       }
     }
 

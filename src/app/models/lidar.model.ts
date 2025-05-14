@@ -11,6 +11,7 @@ export interface LidarData {
   intensities: number[];
   robot_x?: number;
   robot_y?: number;
+  orientation?: number;
 }
 
 export interface LidarPoint {
