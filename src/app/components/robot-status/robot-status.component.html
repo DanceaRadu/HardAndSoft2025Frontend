@@ -2,7 +2,14 @@
 <div class="sensor-information">
   <div class="sensor-row">
     <div class="sensor-entry">
-      <mat-icon class="sensor-icon battery-icon">battery_full</mat-icon>
+      <mat-icon *ngIf="robotStatus.sensors.battery_voltage > 7.8" class="sensor-icon battery-icon battery-green">battery_full</mat-icon>
+      <mat-icon *ngIf="robotStatus.sensors.battery_voltage > 7.6 && robotStatus.sensors.battery_voltage <= 7.8" class="sensor-icon battery-icon battery-green">battery_6_bar</mat-icon>
+      <mat-icon *ngIf="robotStatus.sensors.battery_voltage > 7.4 && robotStatus.sensors.battery_voltage <= 7.6" class="sensor-icon battery-icon battery-green">battery_5_bar</mat-icon>
+      <mat-icon *ngIf="robotStatus.sensors.battery_voltage > 7.2 && robotStatus.sensors.battery_voltage <= 7.4" class="sensor-icon battery-icon battery-green">battery_4_bar</mat-icon>
+      <mat-icon *ngIf="robotStatus.sensors.battery_voltage > 7.0 && robotStatus.sensors.battery_voltage <= 7.2" class="sensor-icon battery-icon battery-orange">battery_3_bar</mat-icon>
+      <mat-icon *ngIf="robotStatus.sensors.battery_voltage > 6.8 && robotStatus.sensors.battery_voltage <= 7.0" class="sensor-icon battery-icon battery-orange">battery_2_bar</mat-icon>
+      <mat-icon *ngIf="robotStatus.sensors.battery_voltage > 6.6 && robotStatus.sensors.battery_voltage <= 6.8" class="sensor-icon battery-icon battery-red">battery_1_bar</mat-icon>
+      <mat-icon *ngIf="robotStatus.sensors.battery_voltage <= 6.6" class="sensor-icon battery-icon battery-red">battery_0_bar</mat-icon>
       <div class="ml-2">
         <div class="sensor-label">Battery</div>
         <div class="sensor-value">{{robotStatus.sensors.battery_voltage}} V</div>

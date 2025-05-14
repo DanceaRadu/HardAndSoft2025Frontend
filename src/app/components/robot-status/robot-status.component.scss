@@ -40,6 +40,18 @@
 
 }
 
+.battery-green {
+  color: var(--success-color);
+}
+
+.battery-orange {
+  color: var(--warning-color);
+}
+
+.battery-red {
+  color: var(--error-color);
+}
+
 .vibration-icon {
   transform: scale(1.4);
   color: var(--success-color);
