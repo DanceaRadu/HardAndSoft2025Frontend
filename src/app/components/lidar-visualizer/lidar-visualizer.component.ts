@@ -34,6 +34,8 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
   private orientationOffset?: number = undefined;
 
   private carModel!: THREE.Mesh<THREE.BufferGeometry, THREE.MeshNormalMaterial>;
+  private carPath: THREE.BufferGeometry = new THREE.BufferGeometry();
+  private carPathPoints: THREE.Vector3[] = [];
 
   ngOnInit(): void {
     this.initThree();
@@ -122,6 +124,15 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
       this.positionUpdate.emit({ x: this.currentRobotX, y: this.currentRobotY });
       if (this.carModel) {
         this.carModel.position.set(this.currentRobotX, 0, this.currentRobotY);
+        const point = new THREE.Vector3(this.currentRobotX, 0, this.currentRobotY);
+        this.carPathPoints.push(point);
+
+        const pathVertices = this.carPathPoints.flatMap(p => [p.x, p.y, p.z]);
+        this.carPath.setAttribute('position', new THREE.Float32BufferAttribute(pathVertices, 3));
+
+        const pathMaterial = new THREE.PointsMaterial({ color: 0xFF5733, size: 0.02 });
+        const pathPoints = new THREE.Points(this.carPath, pathMaterial);
+        this.scene.add(pathPoints);
       }
     }
 
