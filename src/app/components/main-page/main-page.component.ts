@@ -17,11 +17,10 @@ export class MainPageComponent implements OnInit {
   robotStatus: RobotStatus = {
     type: 'status',
     sensors: {
-      hall: false,
-      ultrasonic: 0,
       battery_voltage: 0,
       magnetic_field: false,
-      vibration: false
+      vibration: false,
+      alcohol: false
     }
   }
   currentRobotX: number = 0;
@@ -44,8 +43,8 @@ export class MainPageComponent implements OnInit {
     if (message.type === 'status') {
       console.log(message)
 
-      if(message.sensors.hall === true) {
-        this.sentEventWebsocketMessage("hall")
+      if(message.sensors.alcohol === true) {
+        this.sentEventWebsocketMessage("alcohol")
       }
       if(message.sensors.vibration === true) {
         this.sentEventWebsocketMessage("vibration")
