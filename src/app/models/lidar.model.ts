@@ -14,8 +14,7 @@ export interface LidarData {
   orientation?: number;
 }
 
-export interface LidarPoint {
+export interface MapPoint {
   x: number;
   y: number;
-  intensity: number;
 }

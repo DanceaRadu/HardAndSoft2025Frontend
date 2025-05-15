@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { RobotStatus } from '../../models/robot-status.model';
 import { WebsocketService } from '../../services/websocket.service';
 import { LogPanelComponent } from '../log-panel/log-panel.component';
+import { MapPoint } from '../../models/lidar.model';
 
 @Component({
   selector: 'app-main-page',
@@ -23,6 +24,8 @@ export class MainPageComponent implements OnInit {
       vibration: false
     }
   }
+  currentRobotX: number = 0;
+  currentRobotY: number = 0;
 
   constructor(private websocketService: WebsocketService) {}
 
@@ -32,17 +35,41 @@ export class MainPageComponent implements OnInit {
     })
   }
 
+  handlePositionUpdate(position: MapPoint) {
+    this.currentRobotX = position.x;
+    this.currentRobotY = position.y;
+  }
+
   handleWebsocketMessage(message: any) {
     if (message.type === 'status') {
       console.log(message)
+
+      if(message.sensors.hall === true) {
+        this.sentEventWebsocketMessage("hall")
+      }
+      if(message.sensors.vibration === true) {
+        this.sentEventWebsocketMessage("vibration")
+      }
+      if(message.sensors.magnetic_field === true) {
+        this.sentEventWebsocketMessage("magnetic_field")
+      }
       this.robotStatus = message;
     }
+  }
+
+  private sentEventWebsocketMessage(eventType: string) {
+    this.websocketService.sendMessage("sensors", {
+      type: "log",
+      logType: eventType,
+      timestamp: new Date(),
+      x: this.currentRobotX,
+      y: this.currentRobotY
+    })
   }
 
   handleDownloadLogs() {
     if (this.logPanel && this.logPanel.logs) {
       const logs = this.logPanel.logs;
-      console.log('Logs:', logs);
 
       const blob = new Blob([JSON.stringify(logs)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);

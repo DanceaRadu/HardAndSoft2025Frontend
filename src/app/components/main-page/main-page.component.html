@@ -3,7 +3,7 @@
     <div class="panel point-cloud-panel">
       <div class="panel-title">LIDAR Data visualization</div>
       <div class="panel-separator"></div>
-      <app-lidar-visualizer class="visualizer"></app-lidar-visualizer>
+      <app-lidar-visualizer (positionUpdate)="handlePositionUpdate($event)" class="visualizer"></app-lidar-visualizer>
     </div>
     <div class="panel camera-panel">
       <app-camera-stream></app-camera-stream>

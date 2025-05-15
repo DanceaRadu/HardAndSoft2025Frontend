@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {LogMessage} from '../../../models/log-message.model';
+import { Component, Input } from '@angular/core';
+import { LogMessage } from '../../../models/log-message.model';
 
 @Component({
   selector: 'app-log-entry',

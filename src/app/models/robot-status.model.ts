@@ -1,6 +1,6 @@
 export interface SensorData {
   hall: boolean;
-  ultrasonic: number;
+  ultrasonic: number; //not used
   battery_voltage: number;
   magnetic_field: boolean;
   vibration: boolean;

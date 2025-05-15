@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, HostListener, Output, EventEmitter } from '@angular/core';
 import { WebsocketService } from '../../services/websocket.service';
 import * as THREE from 'three';
-import { LidarData } from '../../models/lidar.model';
+import { LidarData, MapPoint } from '../../models/lidar.model';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { LogMessage } from '../../models/log-message.model';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
@@ -16,6 +16,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
   constructor(private websocketService: WebsocketService) {}
 
   @ViewChild('rendererContainer', { static: true }) rendererContainer!: ElementRef;
+  @Output() positionUpdate = new EventEmitter<MapPoint>();
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
   private renderer!: THREE.WebGLRenderer;
@@ -119,6 +120,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
 
       this.currentRobotX = message.robot_x - (this.xOffset ?? 0);
       this.currentRobotY = message.robot_y - (this.yOffset ?? 0);
+      this.positionUpdate.emit({ x: this.currentRobotX, y: this.currentRobotY });
       if (this.carModel) {
         this.carModel.position.set(this.currentRobotX, 0, this.currentRobotY);
       }
