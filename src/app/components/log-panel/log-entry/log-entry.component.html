@@ -2,7 +2,7 @@
   <div class="log-timestamp">{{ log.timestamp | date: 'HH:mm:ss' }}</div>
   <div class="log-type">{{log.logType}}</div>
   <div class="coordinate-container">
-    <div>{{log.x}} X</div>
-    <div>{{log.y}} Y</div>
+    <div>{{ log.x.toFixed(2) }} X</div>
+    <div>{{ log.y.toFixed(2) }} Y</div>
   </div>
 </div>

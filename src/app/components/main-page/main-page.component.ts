@@ -51,6 +51,7 @@ export class MainPageComponent implements OnInit {
       }
       if(message.sensors.magnetic_field === true) {
         this.sentEventWebsocketMessage("magnetic_field")
+        this.websocketService.sendMessage("sensors", {"type": "stop"})
       }
       this.robotStatus = message;
     }
