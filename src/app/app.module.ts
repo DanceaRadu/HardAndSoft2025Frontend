@@ -13,6 +13,8 @@ import { LidarVisualizerComponent } from './components/lidar-visualizer/lidar-vi
 import { MatIconButton } from '@angular/material/button';
 import { LogPanelComponent } from './components/log-panel/log-panel.component';
 import { LogEntryComponent } from './components/log-panel/log-entry/log-entry.component';
+import { DirectionCommandsComponent } from './components/direction-commands/direction-commands.component';
+import { LogTimeFormatPipe } from './pipes/log-time-format.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { LogEntryComponent } from './components/log-panel/log-entry/log-entry.co
     CameraStreamComponent,
     LidarVisualizerComponent,
     LogPanelComponent,
-    LogEntryComponent
+    LogEntryComponent,
+    DirectionCommandsComponent,
+    LogTimeFormatPipe
   ],
   imports: [
     BrowserModule,

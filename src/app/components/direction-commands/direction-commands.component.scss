@@ -1,0 +1,16 @@
+.command-title {
+  font-size: var(--text-large);
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.decision-container {
+  .decision {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-secondary)
+  }
+}
+
+

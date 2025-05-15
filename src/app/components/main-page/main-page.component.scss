@@ -37,6 +37,10 @@
   .status-panel {
     height: 13rem;
   }
+  .direction-panel {
+    height: 13rem;
+    overflow: auto;
+  }
   .log-panel {
     flex: 1;
     overflow: auto;

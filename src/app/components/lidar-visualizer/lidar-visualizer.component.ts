@@ -111,7 +111,6 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
   }
 
   private updatePointCloud(message: LidarData) {
-    console.log(message)
     if(message.robot_x && message.robot_y) {
       if(this.xOffset === undefined && this.yOffset === undefined) {
         this.xOffset = message.robot_x;

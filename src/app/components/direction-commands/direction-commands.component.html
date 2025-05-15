@@ -1,0 +1,10 @@
+<div class="h-full overflow-hidden">
+  <div class="command-title">Commands</div>
+  <div class="decision-container">
+    <div class="decision" *ngFor="let decision of decisions">
+      <div>{{decision.direction}}</div>
+      <div>{{decision.timestamp | logTimeFormat }}</div>
+    </div>
+  </div>
+</div>
+
