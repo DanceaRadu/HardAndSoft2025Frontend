@@ -97,7 +97,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
     stlLoader.load('/assets/models/toy-car.stl', (geometry) => {
       const material = new THREE.MeshNormalMaterial();
       this.carModel = new THREE.Mesh(geometry, material);
-      this.carModel.scale.set(0.008, 0.008, 0.008);
+      this.carModel.scale.set(0.003, 0.003, 0.003);
       this.carModel.position.set(this.currentRobotX, 0, this.currentRobotY);
       this.scene.add(this.carModel);
   });
@@ -110,6 +110,7 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
   }
 
   private updatePointCloud(message: LidarData) {
+    console.log(message)
     if(message.robot_x && message.robot_y) {
       if(this.xOffset === undefined && this.yOffset === undefined) {
         this.xOffset = message.robot_x;
@@ -138,9 +139,19 @@ export class LidarVisualizerComponent implements OnInit, OnDestroy {
       .filter(e => e !== -1 && e < 0.5)
       .map((range, index) => {
         const angle = (index - 40) * message.header.angle_increment;
-        const x = range * Math.cos(angle);
-        const y = range * Math.sin(angle);
-        return { x, y };
+        const relativeX = range * Math.cos(angle);
+        const relativeY = range * Math.sin(angle);
+
+        const cosTheta = Math.cos(this.currentRobotOrientation);
+        const sinTheta = Math.sin(this.currentRobotOrientation);
+
+        const rotatedX = relativeX * cosTheta - relativeY * sinTheta;
+        const rotatedY = relativeX * sinTheta + relativeY * cosTheta;
+
+        const globalX = rotatedX + this.currentRobotX;
+        const globalY = rotatedY + this.currentRobotY;
+
+        return { x: globalX, y: globalY };
       });
 
     const vertices = points.flatMap(point => [point.x, 0, point.y]);

@@ -19,7 +19,8 @@ export class MainPageComponent implements OnInit {
       hall: false,
       ultrasonic: 0,
       battery_voltage: 0,
-      magnetic_field: false
+      magnetic_field: false,
+      vibration: false
     }
   }
 
